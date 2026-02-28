@@ -1,0 +1,238 @@
+:root {
+  color-scheme: light dark;
+  --page-bg: #e9edf3;
+  --text-main: #1a2435;
+  --text-soft: #5a677d;
+  --section-bg: #f2f5fa;
+  --section-border: #d4dceb;
+  --row-border: #cad3e4;
+  --focus: #3f7eff;
+  --toggle-off: #7d8fae;
+  --toggle-on: #4f86ff;
+  --select-bg: #e8edf7;
+  --select-border: #bcc9df;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 360px;
+  margin: 0;
+  padding: 10px;
+  font-family: "SF Pro Text", "Avenir Next", "Helvetica Neue", sans-serif;
+  color: var(--text-main);
+  background: var(--page-bg);
+  overflow: hidden;
+}
+
+.glass-shell {
+  padding: 0;
+}
+
+.hero {
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-family: "SF Pro Display", "Avenir Next", "Helvetica Neue", sans-serif;
+  font-size: 17px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.hero p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.glass-card {
+  margin-top: 8px;
+  border-radius: 8px;
+  padding: 6px 8px 2px;
+  background: var(--section-bg);
+  border: 1px solid var(--section-border);
+}
+
+h2 {
+  margin: 2px 2px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #5e6f8e;
+}
+
+.setting-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 5px 2px;
+  border-top: 1px solid var(--row-border);
+  cursor: pointer;
+}
+
+.setting-row:first-of-type {
+  border-top: 0;
+}
+
+.setting-row:hover {
+  background: transparent;
+}
+
+.setting-copy {
+  display: block;
+  min-width: 0;
+}
+
+.setting-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 610;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.setting-sub {
+  display: none;
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-ui {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  position: relative;
+  border: 1px solid #aab7cf;
+  background: var(--toggle-off);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.toggle-ui::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f5f8ff;
+  box-shadow: 0 1px 2px rgba(25, 39, 65, 0.25);
+  transition: transform 160ms cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+
+.toggle-input:checked + .toggle-ui {
+  border-color: var(--toggle-on);
+  background: var(--toggle-on);
+}
+
+.toggle-input:checked + .toggle-ui::before {
+  transform: translateX(18px);
+}
+
+.select-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -6px;
+  border-right: 1.6px solid #4c5f81;
+  border-bottom: 1.6px solid #4c5f81;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+select {
+  appearance: none;
+  min-width: 106px;
+  border: 1px solid var(--select-border);
+  background: var(--select-bg);
+  color: #2a3955;
+  border-radius: 8px;
+  font-family: "SF Pro Text", "Avenir Next", "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  font-weight: 550;
+  padding: 6px 26px 6px 10px;
+  cursor: pointer;
+}
+
+.saved {
+  margin: 8px 0 0;
+  min-height: 15px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.01em;
+  color: #345f9f;
+}
+
+select:focus-visible,
+.toggle-input:focus-visible + .toggle-ui {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #1f2633;
+    --text-main: #e6ebf8;
+    --text-soft: #b7c0d7;
+    --section-bg: #283244;
+    --section-border: #3a4860;
+    --row-border: #43526d;
+    --toggle-off: #5f7397;
+    --toggle-on: #6a9bff;
+    --select-bg: #3c4b66;
+    --select-border: #62779d;
+  }
+
+  h2 {
+    color: #aebfdf;
+  }
+
+  .toggle-ui {
+    border-color: #6e82a7;
+  }
+
+  .toggle-ui::before {
+    background: #d8e3f7;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.36);
+  }
+
+  .select-wrap::after {
+    border-right-color: #acc0e6;
+    border-bottom-color: #acc0e6;
+  }
+
+  select {
+    color: #e5eeff;
+  }
+
+  .saved {
+    color: #9fbeef;
+  }
+}

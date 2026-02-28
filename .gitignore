@@ -1,0 +1,6 @@
+*.tgz
+*.log
+*.tmp
+*.DS_Store
+.tmp/
+_metadata/

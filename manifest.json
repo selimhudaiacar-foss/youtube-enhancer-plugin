@@ -1,0 +1,104 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Layout Enhancer",
+  "version": "1.0.3",
+  "description": "YouTube video page layout enhancement with tabbed interface for comments, info, and related videos.",
+  "minimum_chrome_version": "102",
+  "permissions": [
+    "storage",
+    "tabs",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "*://youtube.com/*",
+    "*://*.youtube.com/*",
+    "*://youtube-nocookie.com/*",
+    "*://*.youtube-nocookie.com/*",
+    "*://youtubekids.com/*",
+    "*://*.youtubekids.com/*",
+    "*://doubleclick.net/*",
+    "*://*.doubleclick.net/*",
+    "*://doubleclick.com/*",
+    "*://*.doubleclick.com/*",
+    "*://googlesyndication.com/*",
+    "*://*.googlesyndication.com/*",
+    "*://googleadservices.com/*",
+    "*://*.googleadservices.com/*",
+    "*://google.com/*",
+    "*://*.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "youtube_ads",
+        "enabled": true,
+        "path": "rules/youtube-ads.json"
+      },
+      {
+        "id": "mit_goodbyeads_youtube",
+        "enabled": true,
+        "path": "rules/mit-goodbyeads-youtube.json"
+      },
+      {
+        "id": "gpl_youtube_adtech",
+        "enabled": true,
+        "path": "rules/gpl-youtube-adtech.json"
+      },
+      {
+        "id": "ghostery_youtube_adtech",
+        "enabled": true,
+        "path": "rules/ghostery-youtube-adtech.json"
+      },
+      {
+        "id": "ghostery_youtube_signals",
+        "enabled": true,
+        "path": "rules/ghostery-youtube-signals.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://www.youtube.com/*"
+      ],
+      "css": [
+        "rules/ghostery-youtube-cosmetic.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "main-world-script.js"
+      ],
+      "matches": [
+        "*://*.youtube.com/*"
+      ],
+      "use_dynamic_url": false
+    }
+  ],
+  "action": {
+    "default_title": "YouTube Layout Enhancer",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

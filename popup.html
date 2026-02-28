@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Layout Enhancer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="glass-shell">
+    <header class="hero">
+      <h1 data-i18n="popup_title">YouTube Layout Enhancer</h1>
+      <p data-i18n="popup_subtitle">Settings apply instantly.</p>
+    </header>
+
+    <section class="glass-card">
+      <h2 data-i18n="section_features">Feature Toggles</h2>
+
+      <label class="setting-row" for="isOpenCommentTable">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_layout_optimization">Layout optimization</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenCommentTable">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+
+      <label class="setting-row" for="isOpenThemeProgressBar">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_progress_bar_styling">Progress bar styling</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenThemeProgressBar">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+
+      <label class="setting-row" for="isOpenSpeedControl">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_speed_control">Speed control</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenSpeedControl">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+
+      <label class="setting-row" for="isOpenResumeAutoplay">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_resume_autoplay">Resume + autoplay</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenResumeAutoplay">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+
+      <label class="setting-row" for="isOpenMarkOrRemoveAd">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_ad_labels">Ad labels</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenMarkOrRemoveAd">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+
+      <label class="setting-row" for="isOpenYoutubedownloading">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="feature_youtube_downloading">YouTube downloading</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="isOpenYoutubedownloading">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+    </section>
+
+    <section class="glass-card">
+      <h2 data-i18n="section_playback_theme">Playback & Theme</h2>
+
+      <label class="setting-row select-row" for="language">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="setting_language">Language</span>
+        </span>
+        <span class="select-wrap">
+          <select id="language">
+            <option value="en" data-i18n="language_en">English</option>
+            <option value="tr" data-i18n="language_tr">Türkçe</option>
+          </select>
+        </span>
+      </label>
+
+      <label class="setting-row select-row" for="theme">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="setting_theme">Theme</span>
+        </span>
+        <span class="select-wrap">
+          <select id="theme">
+            <option value="" data-i18n="theme_system">System</option>
+            <option value="light" data-i18n="theme_light">Light</option>
+            <option value="dark" data-i18n="theme_dark">Dark</option>
+          </select>
+        </span>
+      </label>
+
+      <label class="setting-row select-row" for="videoPlaySpeed">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="setting_default_speed">Default speed</span>
+        </span>
+        <span class="select-wrap">
+          <select id="videoPlaySpeed">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="1">1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+            <option value="3">3x</option>
+          </select>
+        </span>
+      </label>
+
+      <label class="setting-row" for="videoLoop">
+        <span class="setting-copy">
+          <span class="setting-title" data-i18n="setting_loop">Loop</span>
+        </span>
+        <input class="toggle-input" type="checkbox" id="videoLoop">
+        <span class="toggle-ui" aria-hidden="true"></span>
+      </label>
+    </section>
+
+    <p class="saved" id="saved" aria-live="polite"></p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
