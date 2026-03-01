@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Layout Enhancer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "YouTube video page layout enhancement with tabbed interface for comments, info, and related videos.",
   "minimum_chrome_version": "102",
   "permissions": [
