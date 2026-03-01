@@ -1,6 +1,6 @@
-# YouTube Layout Enhancer
+# YouTube Enhancer Plugin
 
-YouTube watch-page layout enhancer with:
+YouTube watch-page enhancement plugin with:
 
 - tabbed comments/info/videos layout tools
 - bilingual popup UI (`English` / `Turkce`)
