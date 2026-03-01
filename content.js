@@ -27,6 +27,15 @@
         };
     };
 
+    const toRuntimeConfigPayload = (config) => ({
+        functionState: config.functionState,
+        theme: config.theme,
+        videoPlaySpeed: config.videoPlaySpeed,
+        videoLoop: config.videoLoop,
+        videoResumeMap: config.videoResumeMap,
+        language: config.language
+    });
+
     const injectMainWorldScript = () => {
         const s = document.createElement("script");
         s.src = chrome.runtime.getURL("main-world-script.js");
@@ -36,32 +45,36 @@
     };
 
     let storedCommunicationKey = null;
+    const bootstrapConfig = prepareConfig({});
+    storedCommunicationKey = bootstrapConfig.communicationKey;
+    document.documentElement.dataset.extConfig = JSON.stringify(bootstrapConfig);
+    console.debug("YTEnhancerPlugin content.js: bootstrap config prepared");
+    injectMainWorldScript();
+
+    const syncConfigToMainWorld = (payload) => {
+        const send = () => {
+            window.postMessage({
+                source: "YTEnhancerPluginContent",
+                type: "SYNC_CONFIG",
+                communicationKey: storedCommunicationKey,
+                config: payload
+            }, "*");
+        };
+
+        send();
+        setTimeout(send, 80);
+        setTimeout(send, 240);
+    };
 
     try {
         const storageKeys = ["functionState", "theme", "videoPlaySpeed", "videoLoop", "videoResumeMap", "language"];
-        let storageData = {};
-
-        try {
-            storageData = await chrome.storage.local.get(storageKeys);
-        } catch (storageError) {
-            console.debug("YTEnhancerPlugin content.js: storage read failed, using defaults", storageError);
-        }
-
-        const CONFIG = prepareConfig(storageData);
-        storedCommunicationKey = CONFIG.communicationKey;
-        document.documentElement.dataset.extConfig = JSON.stringify(CONFIG);
-        console.debug("YTEnhancerPlugin content.js: config prepared");
-
-        injectMainWorldScript();
-    } catch (error) {
-        console.debug("YTEnhancerPlugin content.js: fatal error, injecting with defaults", error);
-
-        const fallbackConfig = prepareConfig({});
-        storedCommunicationKey = fallbackConfig.communicationKey;
-        document.documentElement.dataset.extConfig = JSON.stringify(fallbackConfig);
-        console.debug("YTEnhancerPlugin content.js: config prepared");
-
-        injectMainWorldScript();
+        const storageData = await chrome.storage.local.get(storageKeys);
+        const liveConfig = prepareConfig(storageData);
+        liveConfig.communicationKey = storedCommunicationKey;
+        console.debug("YTEnhancerPlugin content.js: storage config prepared");
+        syncConfigToMainWorld(toRuntimeConfigPayload(liveConfig));
+    } catch (storageError) {
+        console.debug("YTEnhancerPlugin content.js: storage read failed, keeping bootstrap defaults", storageError);
     }
 
     window.addEventListener("message", (event) => {
