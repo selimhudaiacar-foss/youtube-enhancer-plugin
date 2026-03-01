@@ -4478,6 +4478,7 @@
         styleElementId: "yt-enhancer-plugin-adblock-style",
         pollTimer: null,
         interruptionObserver: null,
+        interruptionDebounceTimer: null,
         wasMutedBeforeAd: null,
         globalsPatched: false,
         ytPlayerPatched: false,
@@ -5203,7 +5204,11 @@
 
             this.interruptionObserver = new MutationObserver(() => {
                 if (!this.isEnabled()) return;
-                this.neutralizeInterruptionOverlay();
+                if (this.interruptionDebounceTimer) return;
+                this.interruptionDebounceTimer = setTimeout(() => {
+                    this.interruptionDebounceTimer = null;
+                    this.neutralizeInterruptionOverlay();
+                }, 60);
             });
 
             this.interruptionObserver.observe(root, {
