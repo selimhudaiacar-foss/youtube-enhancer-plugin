@@ -4642,18 +4642,39 @@
                 }
             }
         },
+        getInterruptionSelectors: function () {
+            return [
+                "#player-error-message-container:has(a[href*='support.google.com/youtube/answer/3037019'])",
+                "yt-playability-error-supported-renderers#error-screen:has(a[href*='support.google.com/youtube/answer/3037019'])",
+                "ytd-enforcement-message-view-model:has(a[href*='support.google.com/youtube/answer/3037019'])",
+                "tp-yt-paper-dialog:has(a[href*='support.google.com/youtube/answer/3037019'])"
+            ];
+        },
+        getInterruptionNodes: function () {
+            const results = [];
+            for (const selector of this.getInterruptionSelectors()) {
+                const nodes = this.getSafeNodeList(selector);
+                for (const node of nodes) {
+                    results.push(node);
+                }
+            }
+            return results;
+        },
         hasAntiInterruptionSignal: function () {
             const supportLink = document.querySelector("a[href*='support.google.com/youtube/answer/3037019']");
             if (supportLink) return true;
-
-            const labeledHint = document.querySelector("button[aria-label*='interruption'], button[aria-label*='Interrupt'], button[aria-label*='sorun'], button[aria-label*='neden']");
-            if (labeledHint) return true;
+            if (document.querySelector("ytd-watch-flexy[player-unavailable]")) return true;
+            if (this.getInterruptionNodes().length) return true;
 
             const buttonNodes = document.querySelectorAll("button, a");
             for (const node of buttonNodes) {
                 const text = (node.textContent || "").trim().toLowerCase();
                 if (!text) continue;
-                if (text.includes("experiencing interruptions") || text.includes("sorun mu yaşıyorsunuz") || text.includes("nedenini görün")) {
+                if (
+                    text.includes("experiencing interruptions") ||
+                    text.includes("ad blockers violate youtube") ||
+                    text.includes("sorun mu yaşıyorsunuz")
+                ) {
                     return true;
                 }
             }
@@ -5076,41 +5097,16 @@
                 node.style.setProperty("opacity", "1", "important");
             }
 
-            const blockers = [
-                "#player-error-message-container:has(a[href*='support.google.com/youtube/answer/3037019'])",
-                "yt-playability-error-supported-renderers#error-screen",
-                "ytd-enforcement-message-view-model:has(a[href*='support.google.com/youtube/answer/3037019'])",
-                "tp-yt-paper-dialog:has(a[href*='support.google.com/youtube/answer/3037019'])"
-            ];
-            for (const selector of blockers) {
-                const nodes = this.getSafeNodeList(selector);
-                for (const node of nodes) {
-                    if (!(node instanceof HTMLElement)) continue;
-                    node.style.setProperty("display", "none", "important");
-                    node.style.setProperty("visibility", "hidden", "important");
-                    node.style.setProperty("opacity", "0", "important");
-                    node.style.setProperty("pointer-events", "none", "important");
-                    if (node.parentNode) {
-                        node.parentNode.removeChild(node);
-                    }
+            const blockers = this.getInterruptionNodes();
+            for (const node of blockers) {
+                if (!(node instanceof HTMLElement)) continue;
+                node.style.setProperty("display", "none", "important");
+                node.style.setProperty("visibility", "hidden", "important");
+                node.style.setProperty("opacity", "0", "important");
+                node.style.setProperty("pointer-events", "none", "important");
+                if (node.parentNode) {
+                    node.parentNode.removeChild(node);
                 }
-            }
-
-            const moviePlayer = document.querySelector("#movie_player");
-            if (moviePlayer && typeof moviePlayer.playVideo === "function") {
-                try {
-                    moviePlayer.playVideo();
-                } catch (_e) { }
-            }
-
-            const videoElement = document.querySelector("video.html5-main-video, video");
-            if (videoElement instanceof HTMLVideoElement && videoElement.paused && videoElement.readyState >= 2) {
-                try {
-                    const playPromise = videoElement.play();
-                    if (playPromise && typeof playPromise.catch === "function") {
-                        playPromise.catch(() => { });
-                    }
-                } catch (_e) { }
             }
         },
         patchResponseJson: function () {
