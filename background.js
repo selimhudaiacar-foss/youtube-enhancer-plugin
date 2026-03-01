@@ -36,9 +36,9 @@ async function syncRulesetFromStorage() {
     const data = await chrome.storage.local.get(["functionState"]);
     const enabled = isAdBlockEnabled(data.functionState);
     await setRulesetEnabled(enabled);
-    console.debug("YTLayoutExt background: ad ruleset sync", enabled);
+    console.debug("YTEnhancerPlugin background: ad ruleset sync", enabled);
   } catch (error) {
-    console.error("YTLayoutExt background: failed to sync ruleset", error);
+    console.error("YTEnhancerPlugin background: failed to sync ruleset", error);
   }
 }
 
@@ -55,7 +55,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   const nextFunctionState = changes.functionState.newValue;
   const enabled = isAdBlockEnabled(nextFunctionState);
   setRulesetEnabled(enabled).catch((error) => {
-    console.error("YTLayoutExt background: storage change sync failed", error);
+    console.error("YTEnhancerPlugin background: storage change sync failed", error);
   });
 });
 

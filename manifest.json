@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "YouTube Layout Enhancer",
+  "name": "YouTube Enhancer Plugin",
   "version": "1.0.4",
-  "description": "YouTube video page layout enhancement with tabbed interface for comments, info, and related videos.",
+  "description": "YouTube enhancement plugin with layout tools, playback controls, and ad cleanup.",
   "minimum_chrome_version": "102",
   "permissions": [
     "storage",
@@ -86,7 +86,7 @@
     }
   ],
   "action": {
-    "default_title": "YouTube Layout Enhancer",
+    "default_title": "YouTube Enhancer Plugin",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icon16.png",

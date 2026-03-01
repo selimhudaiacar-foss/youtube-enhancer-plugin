@@ -18,7 +18,7 @@ YouTube watch-page enhancement plugin with:
 1. Open `chrome://extensions`
 2. Enable `Developer mode`
 3. Click `Load unpacked`
-4. Select the project folder (`yt-layout-ext`)
+4. Select the project folder (`yt-enhancer-plugin`)
 
 ## Main Features
 
@@ -38,14 +38,14 @@ YouTube watch-page enhancement plugin with:
 For debugging site breakages, you can disable the most aggressive anti-interruption patches:
 
 ```js
-localStorage.setItem("yt-layout-ext:disable-hard-patches", "1");
+localStorage.setItem("yt-enhancer-plugin:disable-hard-patches", "1");
 location.reload();
 ```
 
 Re-enable:
 
 ```js
-localStorage.removeItem("yt-layout-ext:disable-hard-patches");
+localStorage.removeItem("yt-enhancer-plugin:disable-hard-patches");
 location.reload();
 ```
 

@@ -1,6 +1,6 @@
-# YouTube Layout Enhancer: Comprehensive GitHub Overview
+# YouTube Enhancer Plugin: Comprehensive GitHub Overview
 
-YouTube Layout Enhancer is a Chrome MV3 extension built to make YouTube faster, cleaner, and more controllable.
+YouTube Enhancer Plugin is a Chrome MV3 extension built to make YouTube faster, cleaner, and more controllable.
 
 This project does more than visual tweaks. It combines layout optimization, playback controls, multilingual settings, ad cleanup, and anti-interruption resilience through a layered architecture.
 
@@ -94,14 +94,14 @@ The extension includes dedicated defenses against YouTube interruption flows:
 To temporarily disable aggressive anti-interruption patches:
 
 ```js
-localStorage.setItem("yt-layout-ext:disable-hard-patches", "1");
+localStorage.setItem("yt-enhancer-plugin:disable-hard-patches", "1");
 location.reload();
 ```
 
 To re-enable:
 
 ```js
-localStorage.removeItem("yt-layout-ext:disable-hard-patches");
+localStorage.removeItem("yt-enhancer-plugin:disable-hard-patches");
 location.reload();
 ```
 
@@ -115,7 +115,7 @@ The extension does not require broad `<all_urls>` host access.
 1. Open `chrome://extensions`
 2. Enable `Developer mode`
 3. Click `Load unpacked`
-4. Select the `yt-layout-ext` folder
+4. Select the `yt-enhancer-plugin` folder
 
 ## Testing Scope
 
@@ -148,7 +148,7 @@ It covers:
 
 ## Summary
 
-YouTube Layout Enhancer is not just a theme extension.  
+YouTube Enhancer Plugin is not just a theme extension.  
 It is a technical quality-of-life package that improves YouTube across layout, playback control, resume continuity, and ad cleanup.
 
 It is suitable for GitHub distribution and community testing, and currently maintained at a `beta` maturity level.

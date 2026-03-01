@@ -32,7 +32,7 @@
         s.src = chrome.runtime.getURL("main-world-script.js");
         s.async = false;
         (document.documentElement || document.head).appendChild(s);
-        console.debug("YTLayoutExt content.js: main-world-script injected");
+        console.debug("YTEnhancerPlugin content.js: main-world-script injected");
     };
 
     let storedCommunicationKey = null;
@@ -44,29 +44,29 @@
         try {
             storageData = await chrome.storage.local.get(storageKeys);
         } catch (storageError) {
-            console.debug("YTLayoutExt content.js: storage read failed, using defaults", storageError);
+            console.debug("YTEnhancerPlugin content.js: storage read failed, using defaults", storageError);
         }
 
         const CONFIG = prepareConfig(storageData);
         storedCommunicationKey = CONFIG.communicationKey;
         document.documentElement.dataset.extConfig = JSON.stringify(CONFIG);
-        console.debug("YTLayoutExt content.js: config prepared");
+        console.debug("YTEnhancerPlugin content.js: config prepared");
 
         injectMainWorldScript();
     } catch (error) {
-        console.debug("YTLayoutExt content.js: fatal error, injecting with defaults", error);
+        console.debug("YTEnhancerPlugin content.js: fatal error, injecting with defaults", error);
 
         const fallbackConfig = prepareConfig({});
         storedCommunicationKey = fallbackConfig.communicationKey;
         document.documentElement.dataset.extConfig = JSON.stringify(fallbackConfig);
-        console.debug("YTLayoutExt content.js: config prepared");
+        console.debug("YTEnhancerPlugin content.js: config prepared");
 
         injectMainWorldScript();
     }
 
     window.addEventListener("message", (event) => {
         if (event.source !== window) return;
-        if (!event.data || event.data.source !== "YTLayoutExt") return;
+        if (!event.data || event.data.source !== "YTEnhancerPlugin") return;
         if (event.data.type !== "SET_STORAGE") return;
         if (event.data.communicationKey !== storedCommunicationKey) return;
 
@@ -74,7 +74,7 @@
         if (key == null || value === undefined) return;
 
         chrome.storage.local.set({ [key]: value }).catch((err) => {
-            console.debug("YTLayoutExt content.js: storage write failed", key, err);
+            console.debug("YTEnhancerPlugin content.js: storage write failed", key, err);
         });
     }, false);
 })();

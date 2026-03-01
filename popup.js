@@ -11,7 +11,7 @@ const DEFAULT_FUNCTION_STATE = {
 
 const STRINGS = {
   en: {
-    popup_title: "YouTube Layout Enhancer",
+    popup_title: "YouTube Enhancer Plugin",
     popup_subtitle: "Settings apply instantly.",
     section_features: "Feature Toggles",
     section_playback_theme: "Playback & Theme",
@@ -34,7 +34,7 @@ const STRINGS = {
     load_failed: "Could not load settings"
   },
   tr: {
-    popup_title: "YouTube Yerleşim Geliştirici",
+    popup_title: "YouTube Enhancer Plugin",
     popup_subtitle: "Ayarlar anında uygulanır.",
     section_features: "Özellik Anahtarları",
     section_playback_theme: "Oynatma ve Tema",

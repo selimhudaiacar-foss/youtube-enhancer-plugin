@@ -4,7 +4,7 @@
     if (window.__YT_LAYOUT_EXT_RUNNING__) return;
     window.__YT_LAYOUT_EXT_RUNNING__ = true;
 
-    console.debug("YTLayoutExt main-world: init");
+    console.debug("YTEnhancerPlugin main-world: init");
 
     const CONFIG = (function () {
         try {
@@ -14,7 +14,7 @@
                 return JSON.parse(raw);
             }
         } catch (e) {
-            console.debug("YTLayoutExt main-world: config parse error", e);
+            console.debug("YTEnhancerPlugin main-world: config parse error", e);
         }
         return {
             functionState: {},
@@ -103,7 +103,7 @@
             }
 
             window.postMessage({
-                source: "YTLayoutExt",
+                source: "YTEnhancerPlugin",
                 type: "SET_STORAGE",
                 key: storageKey,
                 value: value,
@@ -115,13 +115,13 @@
     const extTrustedTypesPolicy = (function () {
         if (typeof trustedTypes !== "undefined" && typeof trustedTypes.createPolicy === "function") {
             try {
-                return trustedTypes.createPolicy("yt-layout-ext", {
+                return trustedTypes.createPolicy("yt-enhancer-plugin", {
                     createHTML: (s) => s,
                     createScriptURL: (s) => s,
                     createScript: (s) => s
                 });
             } catch (e) {
-                console.debug("YTLayoutExt main-world: trusted types policy creation failed", e);
+                console.debug("YTEnhancerPlugin main-world: trusted types policy creation failed", e);
             }
         }
         return null;
@@ -257,7 +257,7 @@
             trustHTMLErr = e;
         }
         if (trustHTMLErr) {
-            console.debug("YTLayoutExt: TrustedHTML test failed", trustHTMLErr);
+            console.debug("YTEnhancerPlugin: TrustedHTML test failed", trustHTMLErr);
         }
 
         try {
@@ -3044,7 +3044,7 @@
 
             promiseForCustomYtElementsReady.then(eventMap["ceHack"]).catch(console.warn);
 
-            console.debug("YTLayoutExt main-world: executionScript core initialized");
+            console.debug("YTEnhancerPlugin main-world: executionScript core initialized");
 
             /* Stil ekleme */
             const styleEl = document.createElement("style");
@@ -3056,12 +3056,12 @@
             executionFinished = 1;
 
         } catch (e) {
-            console.debug("YTLayoutExt main-world: executionScript error", e);
+            console.debug("YTEnhancerPlugin main-world: executionScript error", e);
         }
     };
     /* ========== executionScript END ========== */
 
-    console.debug("YTLayoutExt main-world: executionScript started");
+    console.debug("YTEnhancerPlugin main-world: executionScript started");
     executionScript(CONFIG.communicationKey);
 
     /* ========== EXTRA FEATURES START ========== */
@@ -3092,7 +3092,7 @@
                 const elementInterval = setInterval(() => {
                     if (totalDelay >= maxDelay) {
                         clearInterval(elementInterval);
-                        console.debug("YTLayoutExt: waitForElementByInterval timeout for", selector);
+                        console.debug("YTEnhancerPlugin: waitForElementByInterval timeout for", selector);
                         resolve(null);
                         return;
                     }
@@ -3100,7 +3100,7 @@
                     result = allowEmpty ? !!element : !!element && !!element.innerHTML;
                     if (result) {
                         clearInterval(elementInterval);
-                        console.debug("YTLayoutExt: waitForElementByInterval found", selector);
+                        console.debug("YTEnhancerPlugin: waitForElementByInterval found", selector);
                         resolve(element);
                     } else {
                         totalDelay += delay;
@@ -3114,27 +3114,27 @@
         currentSpeed: 1,
         activeAnimationId: null,
         run: function () {
-            console.debug("YTLayoutExt SpeedControl: run called");
+            console.debug("YTEnhancerPlugin SpeedControl: run called");
             if (!/youtube\.com/.test(window.location.host)) {
-                console.debug("YTLayoutExt SpeedControl: not on youtube, skipping");
+                console.debug("YTEnhancerPlugin SpeedControl: not on youtube, skipping");
                 return Promise.resolve();
             }
             const functionState = StorageUtil.getValue(StorageUtil.keys.youtube.functionState, StorageUtil.getDefaultFunctionState());
             if (!functionState || functionState.isOpenSpeedControl === false) {
-                console.debug("YTLayoutExt SpeedControl: disabled by settings");
+                console.debug("YTEnhancerPlugin SpeedControl: disabled by settings");
                 return Promise.resolve();
             }
             return new Promise((resolve) => {
                 const storageSpeed = CONFIG.videoPlaySpeed || 1;
                 this.currentSpeed = parseFloat(storageSpeed);
-                console.debug("YTLayoutExt SpeedControl: currentSpeed =", this.currentSpeed);
+                console.debug("YTEnhancerPlugin SpeedControl: currentSpeed =", this.currentSpeed);
                 this.insertStyle();
                 commonUtil.onPageLoad(async () => {
-                    console.debug("YTLayoutExt SpeedControl: page loaded, generating UI");
+                    console.debug("YTEnhancerPlugin SpeedControl: page loaded, generating UI");
                     await this.genrate();
                     this.setVideoRate(storageSpeed);
                     this.videoObserver();
-                    console.debug("YTLayoutExt SpeedControl: initialization complete");
+                    console.debug("YTEnhancerPlugin SpeedControl: initialization complete");
                     resolve();
                 });
             });
@@ -3205,7 +3205,7 @@
             commonUtil.addStyle(speedBtnStyle + speedShowStyle + speedOptionsStyle);
         },
         genrate: async function () {
-            console.debug("YTLayoutExt SpeedControl: generating UI...");
+            console.debug("YTEnhancerPlugin SpeedControl: generating UI...");
             const speedControlBtn = document.createElement("div");
             speedControlBtn.className = "ytp-button SpeedControl_Extension_Btn_X";
             const speedText = document.createElement("span");
@@ -3216,29 +3216,29 @@
             const player = await commonUtil.waitForElementByInterval("#player-container-outer .html5-video-player", true, 200, 20000);
 
             if (player) {
-                console.debug("YTLayoutExt SpeedControl: player found");
+                console.debug("YTEnhancerPlugin SpeedControl: player found");
                 // We also need right controls to insert our button
                 let rightControls = player.querySelector(".ytp-right-controls");
                 if (!rightControls) {
-                    console.debug("YTLayoutExt SpeedControl: rightControls not found immediately, waiting...");
+                    console.debug("YTEnhancerPlugin SpeedControl: rightControls not found immediately, waiting...");
                     rightControls = await commonUtil.waitForElementByInterval(".ytp-right-controls", true, 200, 5000);
                 }
 
                 if (rightControls) {
-                    console.debug("YTLayoutExt SpeedControl: rightControls found");
+                    console.debug("YTEnhancerPlugin SpeedControl: rightControls found");
                     const existingBtn = document.querySelector(".SpeedControl_Extension_Btn_X");
                     if (!existingBtn) {
-                        console.debug("YTLayoutExt SpeedControl: inserting button");
+                        console.debug("YTEnhancerPlugin SpeedControl: inserting button");
                         rightControls.prepend(speedControlBtn);
                         this.genrateOptions(speedControlBtn, player);
                     } else {
-                        console.debug("YTLayoutExt SpeedControl: button already exists");
+                        console.debug("YTEnhancerPlugin SpeedControl: button already exists");
                     }
                 } else {
-                    console.error("YTLayoutExt SpeedControl: rightControls NOT found after wait");
+                    console.error("YTEnhancerPlugin SpeedControl: rightControls NOT found after wait");
                 }
             } else {
-                console.error("YTLayoutExt SpeedControl: player NOT found");
+                console.error("YTEnhancerPlugin SpeedControl: player NOT found");
             }
         },
         genrateOptions: function (button, player) {
@@ -3338,17 +3338,17 @@
             this.activeAnimationId = requestAnimationFrame(fadeStep);
         },
         setVideoRate: function (speed) {
-            console.debug("YTLayoutExt SpeedControl: setVideoRate called with", speed);
+            console.debug("YTEnhancerPlugin SpeedControl: setVideoRate called with", speed);
             const videoElement = document.querySelector(".html5-main-video") || document.querySelector("video");
             if (!videoElement) {
-                console.warn("YTLayoutExt SpeedControl: Video element not found!");
+                console.warn("YTEnhancerPlugin SpeedControl: Video element not found!");
                 return;
             }
             try {
                 videoElement.playbackRate = speed;
-                console.debug("YTLayoutExt SpeedControl: Applied speed", speed, "to video", videoElement);
+                console.debug("YTEnhancerPlugin SpeedControl: Applied speed", speed, "to video", videoElement);
             } catch (e) {
-                console.error("YTLayoutExt SpeedControl: Error applying speed", e);
+                console.error("YTEnhancerPlugin SpeedControl: Error applying speed", e);
             }
         },
         videoObserver: function () {
@@ -3359,7 +3359,7 @@
                 }
 
                 if (videoElement) {
-                    console.debug("YTLayoutExt SpeedControl: Observer attached to video");
+                    console.debug("YTEnhancerPlugin SpeedControl: Observer attached to video");
 
                     // Apply speed on load/found
                     if (videoElement.playbackRate !== this.currentSpeed) {
@@ -3369,7 +3369,7 @@
                     const observer = new MutationObserver((mutationsList) => {
                         for (const mutation of mutationsList) {
                             if (mutation.type === "attributes" && mutation.attributeName === "src") {
-                                console.debug("YTLayoutExt SpeedControl: Video src changed, reapplying speed");
+                                console.debug("YTEnhancerPlugin SpeedControl: Video src changed, reapplying speed");
                                 setTimeout(() => {
                                     videoElement.playbackRate = this.currentSpeed;
                                 }, 100);
@@ -3381,19 +3381,19 @@
                     // Also listen for 'play' and 'loadeddata' events to enforce speed
                     videoElement.addEventListener('play', () => {
                         if (videoElement.playbackRate !== this.currentSpeed) {
-                            console.debug("YTLayoutExt SpeedControl: Video play event, enforcing speed");
+                            console.debug("YTEnhancerPlugin SpeedControl: Video play event, enforcing speed");
                             videoElement.playbackRate = this.currentSpeed;
                         }
                     });
 
                     videoElement.addEventListener('loadeddata', () => {
                         if (videoElement.playbackRate !== this.currentSpeed) {
-                            console.debug("YTLayoutExt SpeedControl: Video loadeddata, enforcing speed");
+                            console.debug("YTEnhancerPlugin SpeedControl: Video loadeddata, enforcing speed");
                             videoElement.playbackRate = this.currentSpeed;
                         }
                     });
                 } else {
-                    console.warn("YTLayoutExt SpeedControl: Could not find video element for observer");
+                    console.warn("YTEnhancerPlugin SpeedControl: Could not find video element for observer");
                 }
             });
         }
@@ -4188,7 +4188,7 @@
             });
         },
         genrateBox: async function () {
-            console.debug("YTLayoutExt ToolBox: generating UI...");
+            console.debug("YTEnhancerPlugin ToolBox: generating UI...");
             const buttonId = "toolBox_extension_codehemu_x";
             const boxContainer = document.createElement("div");
             boxContainer.className = "ytp-button";
@@ -4205,17 +4205,17 @@
             const player = await commonUtil.waitForElementByInterval(".html5-video-player", true, 200, 20000);
 
             if (player) {
-                console.debug("YTLayoutExt ToolBox: player found");
+                console.debug("YTEnhancerPlugin ToolBox: player found");
                 let rightControls = player.querySelector(".ytp-right-controls");
                 if (!rightControls) {
-                    console.debug("YTLayoutExt ToolBox: rightControls not found immediately, waiting...");
+                    console.debug("YTEnhancerPlugin ToolBox: rightControls not found immediately, waiting...");
                     rightControls = await commonUtil.waitForElementByInterval(".ytp-right-controls", true, 200, 5000);
                 }
 
                 if (rightControls) {
                     // Check if already exists to avoid duplicates
                     if (!document.getElementById(buttonId)) {
-                        console.debug("YTLayoutExt ToolBox: inserting button");
+                        console.debug("YTEnhancerPlugin ToolBox: inserting button");
 
                         // Create download button (separate from toolbox)
                         const downloadBtnId = "toolBox_extension_download_btn";
@@ -4237,13 +4237,13 @@
                         rightControls.prepend(boxContainer);
                         this.genrateBoxContainer(boxContainer, player);
                     } else {
-                        console.debug("YTLayoutExt ToolBox: button already exists");
+                        console.debug("YTEnhancerPlugin ToolBox: button already exists");
                     }
                 } else {
-                    console.error("YTLayoutExt ToolBox: rightControls NOT found");
+                    console.error("YTEnhancerPlugin ToolBox: rightControls NOT found");
                 }
             } else {
-                console.error("YTLayoutExt ToolBox: player NOT found");
+                console.error("YTEnhancerPlugin ToolBox: player NOT found");
             }
         },
         downloadVideo: function () {
@@ -4427,7 +4427,7 @@
                                 this.genrateOuterBox();
                             }
                         } catch (e) {
-                            console.error("YTLayoutExt ToolBox Run Error:", e);
+                            console.error("YTEnhancerPlugin ToolBox Run Error:", e);
                         }
                         resolve();
                     });
@@ -4439,7 +4439,7 @@
     };
 
     const AdBlock = {
-        styleElementId: "yt-layout-ext-adblock-style",
+        styleElementId: "yt-enhancer-plugin-adblock-style",
         pollTimer: null,
         wasMutedBeforeAd: null,
         globalsPatched: false,
@@ -4543,7 +4543,7 @@
 
             let enabled = true;
             try {
-                enabled = window.localStorage.getItem("yt-layout-ext:disable-hard-patches") !== "1";
+                enabled = window.localStorage.getItem("yt-enhancer-plugin:disable-hard-patches") !== "1";
             } catch (_e) { }
             this.hardPatchEnabledCache = enabled;
             return enabled;
@@ -4737,7 +4737,7 @@
                     moviePlayer.skipAd();
                 }
             } catch (e) {
-                console.debug("YTLayoutExt AdBlock: movie player force-skip failed", e);
+                console.debug("YTEnhancerPlugin AdBlock: movie player force-skip failed", e);
             }
         },
         syncVideoAudio: function (videoElement, adShowing) {
@@ -4877,14 +4877,14 @@
                     this.pruneAdsFromData(window.ytInitialPlayerResponse, 0);
                 }
             } catch (e) {
-                console.debug("YTLayoutExt AdBlock: ytInitialPlayerResponse scrub failed", e);
+                console.debug("YTEnhancerPlugin AdBlock: ytInitialPlayerResponse scrub failed", e);
             }
             try {
                 if (window.ytInitialData && typeof window.ytInitialData === "object") {
                     this.pruneAdsFromData(window.ytInitialData, 0);
                 }
             } catch (e) {
-                console.debug("YTLayoutExt AdBlock: ytInitialData scrub failed", e);
+                console.debug("YTEnhancerPlugin AdBlock: ytInitialData scrub failed", e);
             }
         },
         patchKnownGlobals: function () {
@@ -4944,7 +4944,7 @@
                 if (typeof input === "string") return input;
                 if (input && typeof input.url === "string") return input.url;
             } catch (e) {
-                console.debug("YTLayoutExt AdBlock: could not extract fetch URL", e);
+                console.debug("YTEnhancerPlugin AdBlock: could not extract fetch URL", e);
             }
             return "";
         },
@@ -5000,7 +5000,7 @@
                         headers: new Headers(response.headers)
                     });
                 } catch (e) {
-                    console.debug("YTLayoutExt AdBlock: fetch sanitize failed", e);
+                    console.debug("YTEnhancerPlugin AdBlock: fetch sanitize failed", e);
                     return response;
                 }
             };
@@ -5044,7 +5044,7 @@
                             value: sanitized.text
                         });
                     } catch (e) {
-                        console.debug("YTLayoutExt AdBlock: xhr sanitize failed", e);
+                        console.debug("YTEnhancerPlugin AdBlock: xhr sanitize failed", e);
                     }
                 });
 
@@ -5121,7 +5121,7 @@
                 try {
                     self.pruneAdsFromData(parsed, 0);
                 } catch (e) {
-                    console.debug("YTLayoutExt AdBlock: response.json scrub failed", e);
+                    console.debug("YTEnhancerPlugin AdBlock: response.json scrub failed", e);
                 }
                 return parsed;
             };
@@ -5143,7 +5143,7 @@
                 try {
                     self.pruneAdsFromData(parsed, 0);
                 } catch (e) {
-                    console.debug("YTLayoutExt AdBlock: JSON parse scrub failed", e);
+                    console.debug("YTEnhancerPlugin AdBlock: JSON parse scrub failed", e);
                 }
                 return parsed;
             };
@@ -5222,7 +5222,7 @@
                     return shortsMatch[1];
                 }
             } catch (e) {
-                console.debug("YTLayoutExt PlaybackResume: could not parse video id", e);
+                console.debug("YTEnhancerPlugin PlaybackResume: could not parse video id", e);
             }
             return "";
         },
@@ -5301,7 +5301,7 @@
                 this.pendingRestore.attempts += 1;
                 this.pendingRestore.stableHits = 0;
             } catch (e) {
-                console.debug("YTLayoutExt PlaybackResume: seek failed", e);
+                console.debug("YTEnhancerPlugin PlaybackResume: seek failed", e);
             }
         },
         ensureAutoplay: function (videoElement) {
@@ -5311,7 +5311,7 @@
                     playPromise.catch(() => { });
                 }
             } catch (e) {
-                console.debug("YTLayoutExt PlaybackResume: autoplay blocked", e);
+                console.debug("YTEnhancerPlugin PlaybackResume: autoplay blocked", e);
             }
         },
         storeVideoProgress: function (force = false) {
@@ -5472,7 +5472,7 @@
         await SpeedControl.run();
         AdBlock.run();
         PlaybackResume.run();
-        console.debug("YTLayoutExt: Extra features initialized");
+        console.debug("YTEnhancerPlugin: Extra features initialized");
     })();
 
     /* ========== EXTRA FEATURES END ========== */
